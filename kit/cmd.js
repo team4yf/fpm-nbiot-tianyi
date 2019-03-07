@@ -2,19 +2,19 @@ const _ = require('lodash');
 const assert = require('assert');
 const { postJson } = require('./httpsutil');
 
-const { appId, secret, cmdBaseUrl } = require('./setting');
+const { appId, cmdBaseUrl } = require('./setting');
 
 const sendCmd = async ( args ) => {
-  const { appId, token, deviceId, command } = args;
+  const { token, deviceId, command } = args;
   try {
     const url = `${ cmdBaseUrl }deviceCommands`;
     const rsp = await postJson({
       url,
-      header: [
-        { name: 'app_key', value: appId },
-        { name: 'Authorization', value: `Bearer ${ token }` },
-      ],
-      data: { deviceId, command, callbackUrl: '' }
+      header: {
+        app_key: appId,
+        Authorization: `Bearer ${ token }`
+      },
+      data: { deviceId, command }
     });
     return rsp;
   } catch (error) {

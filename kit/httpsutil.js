@@ -7,13 +7,11 @@ const path = require('path');
 const CWD = process.cwd();
 
 const ContentType_Form = {
-  name: 'content-type',
-  value: 'application/x-www-form-urlencoded'
+  'content-type': 'application/x-www-form-urlencoded',
 };
 
 const ContentType_Json = {
-  name: 'content-type',
-  value: 'application/json'
+  'content-type': 'application/json',
 };
 
 const _options = {
@@ -24,7 +22,6 @@ const _options = {
     key: fs.readFileSync(path.join(CWD, 'cert/client.key')),
   },
   headers: null,
-  form : {},
   strictSSL: false
 };
 
@@ -32,23 +29,34 @@ const doRequest = ( options ) => {
   console.log(options)
   return new Promise(( rs, rj) => {
     request(options, (error, response, body) => {
-      const { statusCode } = response;
-      if (!error) {
-        rs(_.assign(JSON.parse(body), { code: statusCode }) );
+      if(error){
+        rj({ error })
         return;
       }
-      rj({ error, code: statusCode })
+      const { statusCode } = response;
+      try {
+        rs(_.assign(JSON.parse(body), { code: statusCode }) );
+      } catch (error) {
+        rs({ body, code: statusCode });
+      }
     });
   });
 }
 
-const postCreator = defaultHeader => {
+const postCreator = (type = 'Form' ) => {
+  const defaultHeader = type === 'Form' ? ContentType_Form: ContentType_Json;
   return args => {
     const { url, data, header } = args;
     assert( !_.isEmpty(url), `URL: ${ url } required ~`);
-    const options = _.assign({}, _options, { url, headers: _.concat([ defaultHeader ], header), form: data })
+    const options = _.assign({}, _options, { url, headers: _.assign(defaultHeader , header) })
+    if( type === 'Form'){
+      options.form = data;
+    }else{
+      options.json = true;
+      options.body = data;
+    }
     return doRequest(options);
   }
 }
-exports.postJson = postCreator( ContentType_Json );
-exports.postForm = postCreator( ContentType_Form );
+exports.postJson = postCreator( 'Json' );
+exports.postForm = postCreator( 'Form' );

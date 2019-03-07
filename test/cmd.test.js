@@ -10,7 +10,6 @@ describe('Test Unit', function(){
     try {
       const { accessToken } = await getToken();
       const data = await sendCmd({
-        appId,
         token: accessToken,
         deviceId: '1d37de7c-8c01-4700-b6d3-0da16ece7a4b',
         command: { serviceId: `Light`, method: `SET_LEVEL`, paras: { value: 20 } }
