@@ -1,0 +1,20 @@
+{
+  "name": "fpm-nbiot-platform-10086",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "./node_modules/.bin/nodemon dev/dev.js",
+    "test": "./node_modules/.bin/mocha test/*.test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "request": "^2.88.0",
+    "superagent": "^4.1.0"
+  },
+  "devDependencies": {
+    "mocha": "^6.0.2"
+  }
+}
