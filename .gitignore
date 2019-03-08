@@ -25,3 +25,5 @@ key.js
 db.lock
 config.json
 package-lock.json
+
+ngrok
