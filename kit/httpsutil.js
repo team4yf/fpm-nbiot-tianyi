@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const assert = require('assert');
+const debug = require('debug')('httpsutil');
 const fs = require('fs');
 const request = require('request');
 const path = require('path');
@@ -14,6 +15,7 @@ const ContentType_Json = {
   'content-type': 'application/json',
 };
 
+
 const _options = {
   url: null,
   method: 'POST',
@@ -21,12 +23,13 @@ const _options = {
     cert: fs.readFileSync(path.join(CWD, 'cert/client.crt')),
     key: fs.readFileSync(path.join(CWD, 'cert/client.key')),
   },
+  json: true,
   headers: null,
   strictSSL: false
 };
 
 const doRequest = ( options ) => {
-  console.log(options)
+  debug('%O', options)
   return new Promise(( rs, rj) => {
     request(options, (error, response, body) => {
       if(error){
@@ -35,7 +38,7 @@ const doRequest = ( options ) => {
       }
       const { statusCode } = response;
       try {
-        rs(_.assign(JSON.parse(body), { code: statusCode }) );
+        rs(_.assign(body, { code: statusCode }) );
       } catch (error) {
         rs({ body, code: statusCode });
       }
@@ -52,7 +55,6 @@ const postCreator = (type = 'Form' ) => {
     if( type === 'Form'){
       options.form = data;
     }else{
-      options.json = true;
       options.body = data;
     }
     return doRequest(options);

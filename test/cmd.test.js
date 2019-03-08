@@ -11,12 +11,14 @@ describe('Test Unit', function(){
       const { accessToken } = await getToken();
       const data = await sendCmd({
         token: accessToken,
-        deviceId: '1d37de7c-8c01-4700-b6d3-0da16ece7a4b',
-        command: { serviceId: `Light`, method: `SET_LEVEL`, paras: { value: 20 } }
+        deviceId: '7857597',
+        command: { serviceId: `Light`, method: `SET_LEVEL`, paras: { value: 30 } }
       });
-      console.log(data);
+      const { commandId, code } = data;
+      assert( code == 201, 'Code should be 201');
+      assert( commandId != undefined, 'commandId should not be empty');
     } catch (error) {
-      console.log(error)
+      throw error;
     }
   });
 
