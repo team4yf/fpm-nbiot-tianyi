@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "./node_modules/.bin/nodemon source/app.js",
     "test": "./node_modules/.bin/mocha test/*.test.js",
-    "proxy": "./ngrok http 9999"
+    "fake": "curl -H \"Content-Type:application/json\" -X POST --data {\"a\":\"b\"} http://localhost:9999/notify"
   },
   "author": "",
   "license": "ISC",
