@@ -7,7 +7,7 @@ const router = fpm.createRouter();
 router.post('/notify', async (ctx) =>{
 
   try {
-    const data = parseJson(ctx);
+    const data = await parseJson(ctx);
     console.log(data);
     ctx.body = { code: 0 }
   } catch (error) {
