@@ -50,7 +50,12 @@
 
     ```bash
     # command 2
-    curl -H "Content-Type:application/json" -X POST --data {"a":"b"} http://localhost:9999/notify
+    curl -H "Content-Type:application/json" -X POST --data {\"a\":\"b\"} http://localhost:9999/notify
+    ```
+
+    ```bash
+    # command 3
+    curl -H "Content-Type:application/json" -X POST --data {'a':'b'} http://localhost:9999/notify
     ```
 
     使用 Command 1 的指令，会导致服务异常：
@@ -58,8 +63,8 @@
     ```javascript
      { SyntaxError: Unexpected token a in JSON at position 1
         at JSON.parse (<anonymous>)
-        at parse (D:\Workspace\nodejs\fpm\fpm-nbiot-tianyi\node_modules\co-body\lib\json.js:57:17)
-        at AsyncFunction.module.exports [as json] (D:\Workspace\nodejs\fpm\fpm-nbiot-tianyi\node_modules\co-body\lib\json.js:41:20)
+        at parse (co-body\lib\json.js:57:17)
+        at AsyncFunction.module.exports [as json] (co-body\lib\json.js:41:20)
         at process._tickCallback (internal/process/next_tick.js:68:7) status: 400, body: '{a:b}' } { request:
     { method: 'POST',
         url: '/notify',
@@ -85,4 +90,3 @@
   - How to fix?
 
     需要对 yf-fpm-server 中的 co-body 模块进行处理，进行参数的判断，如果是json格式的，则直接使用，不用进行 JSON.parse
-    

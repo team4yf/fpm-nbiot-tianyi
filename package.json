@@ -15,7 +15,7 @@
     "lodash": "^4.17.11",
     "request": "^2.88.0",
     "superagent": "^4.1.0",
-    "yf-fpm-server": "^2.5.0"
+    "yf-fpm-server": "^2.5.1"
   },
   "devDependencies": {
     "mocha": "^6.0.2",
