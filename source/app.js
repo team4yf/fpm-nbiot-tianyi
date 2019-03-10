@@ -1,14 +1,14 @@
 const { Fpm } = require('yf-fpm-server');
 
-const fpm = new Fpm({ disableBodyParser: '/notify'});
+const fpm = new Fpm({ disableBodyParser: '/aa'});
 
 const router = fpm.createRouter();
 
 router.post('/notify', async (ctx) =>{
 
   try {
-    const data = await parseJson(ctx);
-    console.log(data);
+    const data = ctx.request.body;
+    console.log('bodypaser', data);
     ctx.body = { code: 0 }
   } catch (error) {
     ctx.throw(error, 502);
