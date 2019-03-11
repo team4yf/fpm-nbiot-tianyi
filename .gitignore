@@ -26,3 +26,5 @@ db.lock
 config.json
 package-lock.json
 token.json
+
+ngrok
