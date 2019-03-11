@@ -3,17 +3,17 @@ const assert = require('assert');
 const { postJson } = require('./httpsutil');
 const debug = require('debug')('cmd');
 
-const { appId, cmdBaseUrl } = require('./setting');
+const { cmdBaseUrl } = require('./setting');
 
 const sendCmd = async ( args ) => {
-  const { token, deviceId, command } = args;
+  const { appId, accessToken, deviceId, command } = args;
   try {
     const url = `${ cmdBaseUrl }deviceCommands`;
     const rsp = await postJson({
       url,
       header: {
         app_key: appId,
-        Authorization: `Bearer ${ token }`
+        Authorization: `Bearer ${ accessToken }`
       },
       data: { deviceId, command }
     });

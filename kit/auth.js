@@ -2,9 +2,10 @@ const _ = require('lodash');
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const debug = require('debug')('auth');
 const { postJson, postForm } = require('./httpsutil');
 
-const { appId, secret, secBaseUrl } = require('./setting');
+const { secBaseUrl } = require('./setting');
 
 const CWD = process.cwd();
 const tokenFile = path.join(CWD, 'token.json');
@@ -29,7 +30,7 @@ const saveTokenInfo = token => {
 
 const CACHE_TOKEN = getTokenInfo();
 
-const getToken = async ( ) => {
+const getToken = async ({ appId, secret }) => {
   try {
     let token;
     const NOW = _.now();
@@ -45,10 +46,15 @@ const getToken = async ( ) => {
     }else{
       const url = `${ secBaseUrl }login`;
       token = await postForm({ url, data: { appId, secret }});
+      assert(token.code == 200, JSON.stringify(token))
+      
     }
     assert( token != undefined, 'Get/Refresh Token Error!');
     const { expiresIn } = token;
     token.expiresTime = NOW + (expiresIn * 1000);
+    token.appId = appId;
+    token.secret = secret;
+
     saveTokenInfo(token);
     return token;
   } catch (error) {
@@ -58,7 +64,7 @@ const getToken = async ( ) => {
 
 const refreshToken = async ( arg ) => {
   try {
-    const { refreshToken } = arg;
+    const { refreshToken, appId, secret } = arg;
     assert( refreshToken != undefined, 'Refresh Token Required when invoke the refreshToken()')
     const url = `${ secBaseUrl }refreshToken`;
     const token = await postJson({ url, data: { appId, secret, refreshToken }});

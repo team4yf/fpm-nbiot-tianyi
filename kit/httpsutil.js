@@ -60,5 +60,7 @@ const postCreator = (type = 'Form' ) => {
     return doRequest(options);
   }
 }
+
+// const getJson = 
 exports.postJson = postCreator( 'Json' );
 exports.postForm = postCreator( 'Form' );

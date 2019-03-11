@@ -1,10 +1,13 @@
 const { Fpm } = require('yf-fpm-server');
+const Biz = require('./biz');
 
 const fpm = new Fpm();
 
-fpm.subscribe(`#webhook/tianyi/notify`, (topic, message) => {
-  console.log(topic, message);
-})
+const biz = fpm.createBiz('0.0.1');
+
+biz.addSubModules('tianyi', Biz(fpm));
+
+fpm.addBizModules(biz);
 
 fpm.run().then( () => {
     console.log('Ready to go...')
