@@ -13,5 +13,6 @@ module.exports = {
   secBaseUrl: `${URL_PERFIX}/sec/v1.1.0/`,
   cmdBaseUrl: `${URL_PERFIX}/cmd/v1.4.0/`,
   subBaseUrl: `${URL_PERFIX}/sub/v1.2.0/`,
+  cmdDeviceUrl: `${URL_PERFIX}/reg/v1.1.0/`,
 
 }
