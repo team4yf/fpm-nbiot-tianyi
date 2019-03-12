@@ -31,7 +31,9 @@
 - [x] 获取token
 - [x] token失效后，刷新token
 - [x] 发送指令给设备
-- [ ] 订阅设备信息
+- [ ] 订阅设备信息 
+    - [ ] 获取订阅列表 subscriptions
+    - [ ] 提交订阅URL
 - [ ] 联调应用和设备
 - [ ] 接入到 fpm-iot-middleware 平台中
 - [ ] 上线应用

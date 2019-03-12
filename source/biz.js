@@ -1,9 +1,10 @@
 const _ = require('lodash');
 const assert = require('assert');
 const debug = require('debug')('biz');
-
-const { sendCmd } = require('../kit/cmd');
 const { getToken } = require('../kit/auth');
+const { sendCmd } = require('../kit/cmd');
+
+const { subscriptions, subscribe } = require('../kit/subscribe');
 
 module.exports = (fpm) => {
 
@@ -48,12 +49,44 @@ module.exports = (fpm) => {
     subscribe: async ( args ) => {
       // subscribe a event
       debug('%O', args)
-      throw Error('stup')
+      const { notifyType = 'deviceDataChanged', callbackUrl } = args;
+      try {
+        const { accessToken } = await getToken( { appId, secret } );
+        const data = await subscribe({
+          appId,
+          accessToken,
+          notifyType,
+          callbackUrl,
+          
+        });
+        return data;
+      } catch (error) {
+        debug('error %O', error)
+        return Promise.reject({
+          message: error.message,
+        })
+      }
     },
     subscriptions: async ( args ) => {
       // get all of the subscriptions
       debug('%O', args)
-      throw Error('stup')
+      const { notifyType = 'deviceDataChanged', pageNo = 0, pageSize = 100 } = args;
+      try {
+        const { accessToken } = await getToken( { appId, secret } );
+        const data = await subscriptions({
+          appId,
+          accessToken,
+          notifyType,
+          pageNo,
+          pageSize,
+        });
+        return data;
+      } catch (error) {
+        debug('error %O', error)
+        return Promise.reject({
+          message: error.message,
+        })
+      }
     },
 
   }

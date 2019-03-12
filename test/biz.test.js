@@ -10,7 +10,31 @@ describe('Function', function(){
     try {
       const rsp = await new Func('tianyi.send').invoke({});
       console.log(rsp);
-      assert(rsp === 1, 'should be 1');
+      
+    } catch (error) {
+      throw error;
+    }
+    
+      
+  });
+
+  it('subscriptions', async () => {
+    try {
+      const rsp = await new Func('tianyi.subscriptions').invoke({notifyType: `deviceDataChanged`,});
+      console.log(rsp);
+      
+    } catch (error) {
+      throw error;
+    }
+    
+      
+  });
+
+  it('subscribe', async () => {
+    try {
+      const rsp = await new Func('tianyi.subscribe').invoke({ notifyType: `deviceDataChanged`, callbackUrl: `https://a.yunplus.io:9443/webhook/tianyi/notify/deviceChange2` });
+      console.log(rsp);
+      
     } catch (error) {
       throw error;
     }

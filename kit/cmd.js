@@ -18,8 +18,8 @@ const sendCmd = async ( args ) => {
       data: { deviceId, command }
     });
     const { code, commandId } = rsp;
-    assert( code == 201, `Do deviceCommands Error,Actual RSP: ${ JSON.stringify(rsp)}`);
-    assert( commandId != undefined, `No CommandId Returned~ ,Actual RSP: ${ JSON.stringify(rsp)}`);
+    assert( code == 201, JSON.stringify(rsp));
+    assert( commandId != undefined, JSON.stringify(rsp));
     return rsp;
   } catch (error) {
     debug('%O', error);

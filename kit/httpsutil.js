@@ -4,6 +4,7 @@ const debug = require('debug')('httpsutil');
 const fs = require('fs');
 const request = require('request');
 const path = require('path');
+const querystring = require('querystring');
 
 const CWD = process.cwd();
 
@@ -50,7 +51,7 @@ const postCreator = (type = 'Form' ) => {
   const defaultHeader = type === 'Form' ? ContentType_Form: ContentType_Json;
   return args => {
     const { url, data, header } = args;
-    assert( !_.isEmpty(url), `URL: ${ url } required ~`);
+    assert( !_.isEmpty(url), JSON.stringify({ code: -999, message: `URL: ${ url } required ~`}));
     const options = _.assign({}, _options, { url, headers: _.assign(defaultHeader , header) })
     if( type === 'Form'){
       options.form = data;
@@ -61,6 +62,19 @@ const postCreator = (type = 'Form' ) => {
   }
 }
 
-// const getJson = 
+/**
+ * create a GET requrest.
+ */
+const getJson = (args) => {
+  const { url, data, header } = args;
+  let params;
+  if(!_.isEmpty(data)){
+    params = querystring.stringify(data);
+  }
+  assert( !_.isEmpty(url), JSON.stringify({ code: -999, message: `URL: ${ url } required ~`}));
+  const options = _.assign({}, _options, { url: `${url}?${ params || '' }`, method: 'GET', headers: _.assign(ContentType_Json , header) })
+  return doRequest(options);
+}
 exports.postJson = postCreator( 'Json' );
 exports.postForm = postCreator( 'Form' );
+exports.getJson = getJson;
